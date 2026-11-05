@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "projectID": "1bf63aaa-869c-4929-a76c-1c7c4ed238b4",
+  "kind": "tweak",
+  "template": {
+    "extensionID": "wiki.qaq.apelin.dev.tweak",
+    "templateID": "objc-hook",
+    "version": "0.1.1",
+    "digest": "sha256:f7aa0129fcb88ba57ea493d55f34828fd0bc1a435e5a0e3145dedf16118d4dc6"
+  },
+  "environment": {
+    "toolchain": {
+      "id": "f88a63eda7caa77b5dc1f336",
+      "digest": "sha256:346ee937396ee5e2ecbdd916c79b315252e18726db08abc28c0fbdff96fe5fab"
+    },
+    "sdk": {
+      "id": "iphoneos17.4-8618351c",
+      "digest": "sha256:8618351cbc242b134f8f6a7585d7d689e29ab148be51f5fe24eb07c26cd67983"
+    }
+  },
+  "language": "objc",
+  "deploymentTarget": "16.0",
+  "architectures": {
+    "rootless": [
+      "arm64",
+      "arm64e"
+    ],
+    "roothide": [
+      "arm64e"
+    ]
+  },
+  "configurations": {
+    "Debug": {
+      "optimization": "0",
+      "debugInfo": true,
+      "defines": {
+        "DEBUG": "1"
+      }
+    },
+    "Release": {
+      "optimization": "2",
+      "debugInfo": true
+    }
+  },
+  "products": [
+    {
+      "id": "tweak",
+      "type": "dylib",
+      "name": "KeyPunct",
+      "sources": [
+        "Sources/*.m"
+      ],
+      "headerSearchPaths": [
+        "Sources"
+      ],
+      "objcARC": true,
+      "frameworks": [
+        "Foundation",
+        "UIKit"
+      ],
+      "libraries": [
+        "substrate"
+      ],
+      "extensionSupport": [
+        {
+          "extension": "wiki.qaq.apelin.dev.tweak",
+          "component": "substrate"
+        }
+      ]
+    },
+    {
+      "id": "prefs",
+      "type": "bundle",
+      "name": "KeyPunctPrefs",
+      "sources": [
+        "Prefs/*.m"
+      ],
+      "headerSearchPaths": [
+        "Prefs"
+      ],
+      "resources": [
+        "Resources/Root.plist",
+        "Resources/icon.png",
+        "Resources/icon@2x.png",
+        "Resources/icon@3x.png"
+      ],
+      "infoPlist": "Resources/Info.plist",
+      "objcARC": true,
+      "frameworks": [
+        "Foundation",
+        "UIKit",
+        "Preferences"
+      ],
+      "extensionSupport": [
+        {
+          "extension": "wiki.qaq.apelin.dev.preferences",
+          "component": "preferences"
+        }
+      ]
+    }
+  ],
+  "build": {
+    "steps": [
+      {
+        "type": "compile",
+        "product": "tweak"
+      },
+      {
+        "type": "link",
+        "product": "tweak"
+      },
+      {
+        "type": "lipo",
+        "product": "tweak"
+      },
+      {
+        "type": "dsym",
+        "product": "tweak"
+      },
+      {
+        "type": "strip",
+        "product": "tweak",
+        "style": "non-global"
+      },
+      {
+        "type": "sign",
+        "product": "tweak",
+        "identity": "adhoc"
+      },
+      {
+        "type": "compile",
+        "product": "prefs"
+      },
+      {
+        "type": "link",
+        "product": "prefs"
+      },
+      {
+        "type": "bundle-resources",
+        "product": "prefs"
+      },
+      {
+        "type": "lipo",
+        "product": "prefs"
+      },
+      {
+        "type": "dsym",
+        "product": "prefs"
+      },
+      {
+        "type": "strip",
+        "product": "prefs",
+        "style": "non-global"
+      },
+      {
+        "type": "sign",
+        "product": "prefs",
+        "identity": "adhoc"
+      }
+    ]
+  },
+  "package": {
+    "id": "com.wm0104.keypunct",
+    "name": "KeyPunct",
+    "version": "0.0.1",
+    "description": "中文拼音键盘下直接输入英文半角标点",
+    "longDescription": [
+      "特别感谢 i_82 打造的 Apelin，为 KeyPunct 的开发、调试与构建提供了有力支持，让想法得以在 iPhone 上落地。"
+    ],
+    "icon": "https://raw.githubusercontent.com/wm0104/KeyPunct/main/Assets/KeyPunct.png",
+    "author": "wm0104(Apelin辅助开发)",
+    "section": "Tweaks",
+    "depends": [
+      "mobilesubstrate",
+      "preferenceloader"
+    ],
+    "layout": [
+      {
+        "path": "/Library/MobileSubstrate/DynamicLibraries/KeyPunct.dylib",
+        "product": "tweak"
+      },
+      {
+        "path": "/Library/PreferenceBundles/KeyPunctPrefs.bundle",
+        "product": "prefs"
+      },
+      {
+        "path": "/Library/PreferenceLoader/Preferences/KeyPunctPrefs.plist",
+        "file": "Packaging/entry.plist",
+        "mode": "0644"
+      }
+    ],
+    "tweakFilter": {
+      "dylib": "tweak",
+      "bundles": [
+        "com.apple.UIKit"
+      ]
+    }
+  }
+}

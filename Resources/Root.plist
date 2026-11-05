@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>title</key>
+	<string>KeyPunct</string>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>中文键盘</string>
+			<key>footerText</key>
+			<string>简体拼音（26 键与九宫格）单按标点输出半角：，? ! : ; 及引号、括号、书名号、省略号；「。」「、」保持中文。候选、听写、粘贴不受影响。</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>label</key>
+			<string>启用半角标点</string>
+			<key>key</key>
+			<string>enabled</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.wm0104.keypunct.preferences</string>
+			<key>PostNotification</key>
+			<string>com.wm0104.keypunct/changed</string>
+		</dict>
+	</array>
+</dict>
+</plist>
